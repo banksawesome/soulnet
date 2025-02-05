@@ -1,2 +1,2 @@
 # soulnet
-A social media website built with react
+I was bored so I built a social media website with react.js
