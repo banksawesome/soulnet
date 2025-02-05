@@ -27,15 +27,17 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="hidden lg:block w-64 sticky top-20">
-      <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="hidden lg:block w-64 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto hide-scrollbar">
+      <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-4">
         <div className="space-y-2">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors ${
-                location.pathname === item.path ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border transition-colors ${
+                location.pathname === item.path 
+                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' 
+                  : 'text-gray-700 dark:text-gray-200'
               }`}
             >
               <item.icon className="w-5 h-5" />
@@ -43,14 +45,16 @@ export default function Sidebar() {
             </Link>
           ))}
           
-          <hr className="my-4" />
+          <hr className="my-4 border-gray-200 dark:border-dark-border" />
           
           {secondaryItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors ${
-                location.pathname === item.path ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border transition-colors ${
+                location.pathname === item.path 
+                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' 
+                  : 'text-gray-700 dark:text-gray-200'
               }`}
             >
               <item.icon className="w-5 h-5" />

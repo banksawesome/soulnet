@@ -43,7 +43,6 @@ export default function Home() {
   const [posts, setPosts] = useState(initialPosts);
   const [newPost, setNewPost] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handlePost = (e) => {
     e.preventDefault();
@@ -53,7 +52,7 @@ export default function Home() {
       id: Date.now().toString(),
       content: newPost,
       author: {
-        name: 'Current User',
+        name: 'John Doe',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'
       },
       likes: 0,
@@ -68,8 +67,9 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+    <div className="max-w-2xl mx-auto px-4 py-20">
+      {/* Create Post */}
+      <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-4 mb-6">
         <form onSubmit={handlePost}>
           <div className="flex items-start space-x-4">
             <img
@@ -82,7 +82,7 @@ export default function Home() {
                 value={newPost}
                 onChange={(e) => setNewPost(e.target.value)}
                 placeholder="What's on your mind?"
-                className="w-full rounded-lg bg-gray-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg bg-gray-100 dark:bg-dark-border dark:text-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                 rows="3"
               />
               
@@ -106,7 +106,7 @@ export default function Home() {
                 <div className="flex space-x-2">
                   <button
                     type="button"
-                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-full"
                     onClick={() => document.getElementById('image-input').click()}
                   >
                     <ImageIcon className="w-5 h-5" />
@@ -129,21 +129,20 @@ export default function Home() {
                   />
                   <button
                     type="button"
-                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-full"
                   >
                     <Link className="w-5 h-5" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full"
-                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-full"
                   >
                     <Smile className="w-5 h-5" />
                   </button>
                 </div>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+                  className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
                   disabled={!newPost.trim() && !selectedImage}
                 >
                   <PenSquare className="w-5 h-5" />
@@ -155,6 +154,7 @@ export default function Home() {
         </form>
       </div>
 
+      {/* Posts Feed */}
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
