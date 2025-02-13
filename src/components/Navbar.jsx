@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { 
-  Home, 
-  User, 
-  Bell, 
-  LogOut, 
-  MessageCircle, 
-  Compass, 
-  Bookmark, 
+import {
+  Home,
+  User,
+  Bell,
+  LogOut,
+  MessageCircle,
+  Compass,
+  Bookmark,
   Settings,
   Calendar,
   Users,
@@ -39,7 +39,7 @@ export default function Navbar() {
     { path: '/trending', icon: TrendingUp, label: 'Trending' },
     { path: '/profile', icon: User, label: 'Profile' }
   ];
-  
+
   const secondaryItems = [
     { path: '/settings', icon: Settings, label: 'Settings' },
     { path: '/help', icon: HelpCircle, label: 'Help' },
@@ -50,18 +50,17 @@ export default function Navbar() {
     <>
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu */}
-      <div className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-dark-card transform transition-transform duration-200 ease-in-out z-50 lg:hidden ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-dark-card transform transition-transform duration-200 ease-in-out z-50 lg:hidden ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         <div className="p-4">
-          <button 
+          <button
             onClick={() => setIsMenuOpen(false)}
             className="absolute top-4 right-4 text-gray-500 dark:text-gray-400"
           >
@@ -103,7 +102,7 @@ export default function Navbar() {
         <div className="w-full px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <button 
+              <button
                 className="lg:hidden mr-4 text-gray-500 dark:text-gray-400"
                 onClick={() => setIsMenuOpen(true)}
               >
@@ -125,7 +124,7 @@ export default function Navbar() {
                 <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {/* Theme Toggle */}
               <button
@@ -168,17 +167,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Search Bar */}
-      <div className="lg:hidden fixed top-16 left-0 right-0 bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border z-20 px-4 py-2">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search SoulNet..."
-            className="w-full px-4 py-2 pl-10 bg-gray-100 dark:bg-dark-border rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-200"
-          />
-          <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
-        </div>
-      </div>
     </>
   );
 }
