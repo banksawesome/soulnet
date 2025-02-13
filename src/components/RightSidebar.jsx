@@ -20,8 +20,6 @@ function RightSidebar() {
   const trendingTopics = [
     '#Technology',
     '#DigitalArt',
-    '#Innovation',
-    '#WebDevelopment'
   ];
 
   const upcomingEvents = [
@@ -40,7 +38,7 @@ function RightSidebar() {
   ];
 
   return (
-    <div className="hidden xl:block w-80 sticky top-20 space-y-6 pl-4">
+    <div className="hidden xl:block w-80 sticky top-20 space-y-6 pl-4 h-[calc(100vh-5rem)]">
       {/* Suggested Friends */}
       <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-4">
         <div className="flex items-center justify-between mb-4">
