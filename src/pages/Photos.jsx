@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Camera, Grid, List } from 'lucide-react';
 
 const photos = [
@@ -33,7 +33,7 @@ const photos = [
 ];
 
 export default function Photos() {
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState('grid');
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-20">
@@ -46,17 +46,15 @@ export default function Photos() {
           <div className="bg-white rounded-lg shadow-sm p-1 flex">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded ${
-                viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500'
-              }`}
+              className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500'
+                }`}
             >
               <Grid className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded ${
-                viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500'
-              }`}
+              className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500'
+                }`}
             >
               <List className="w-5 h-5" />
             </button>
