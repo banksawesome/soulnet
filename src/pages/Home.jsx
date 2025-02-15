@@ -85,7 +85,7 @@ export default function Home() {
                 className="w-full rounded-lg bg-gray-100 dark:bg-dark-border dark:text-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                 rows="3"
               />
-              
+
               {selectedImage && (
                 <div className="mt-2 relative">
                   <img

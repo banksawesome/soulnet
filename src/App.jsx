@@ -1,10 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import RightSidebar from './components/RightSidebar';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
@@ -25,41 +27,61 @@ import Marketplace from './pages/Marketplace';
 import Gaming from './pages/Gaming';
 import Live from './pages/Live';
 
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = true; // Replace with actual auth check
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
+
 function App() {
   return (
     <ThemeProvider>
       <UserProvider>
         <Router>
-          <div className="min-h-screen bg-gray-50 dark:bg-dark-bg transition-colors duration-200">
-            <Navbar />
-            <div className="flex w-full mx-auto">
-              <Sidebar />
-              <main className="flex-1 w-full px-0 sm:px-4 mx-auto max-w-2xl lg:max-w-4xl xl:max-w-6xl">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/notifications" element={<Notifications />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/explore" element={<Explore />} />
-                  <Route path="/bookmarks" element={<Bookmarks />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/events" element={<Events />} />
-                  <Route path="/groups" element={<Groups />} />
-                  <Route path="/stories" element={<Stories />} />
-                  <Route path="/trending" element={<Trending />} />
-                  <Route path="/friends" element={<Friends />} />
-                  <Route path="/photos" element={<Photos />} />
-                  <Route path="/help" element={<Help />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/communities" element={<Communities />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/gaming" element={<Gaming />} />
-                  <Route path="/live" element={<Live />} />
-                </Routes>
-              </main>
-              <RightSidebar />
-            </div>
-          </div>
+          <Routes>
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <div className="min-h-screen bg-gray-50 dark:bg-dark-bg transition-colors duration-200">
+                    <Navbar />
+                    <div className="flex w-full mx-auto">
+                      <Sidebar />
+                      <main className="flex-1 w-full px-0 sm:px-4 mx-auto max-w-2xl lg:max-w-4xl xl:max-w-6xl">
+                        <Routes>
+                          <Route path="/" element={<Home />} />
+                          <Route path="/profile" element={<Profile />} />
+                          <Route path="/notifications" element={<Notifications />} />
+                          <Route path="/messages" element={<Messages />} />
+                          <Route path="/explore" element={<Explore />} />
+                          <Route path="/bookmarks" element={<Bookmarks />} />
+                          <Route path="/settings" element={<Settings />} />
+                          <Route path="/events" element={<Events />} />
+                          <Route path="/groups" element={<Groups />} />
+                          <Route path="/stories" element={<Stories />} />
+                          <Route path="/trending" element={<Trending />} />
+                          <Route path="/friends" element={<Friends />} />
+                          <Route path="/photos" element={<Photos />} />
+                          <Route path="/help" element={<Help />} />
+                          <Route path="/privacy" element={<Privacy />} />
+                          <Route path="/communities" element={<Communities />} />
+                          <Route path="/marketplace" element={<Marketplace />} />
+                          <Route path="/gaming" element={<Gaming />} />
+                          <Route path="/live" element={<Live />} />
+                        </Routes>
+                      </main>
+                      <RightSidebar />
+                    </div>
+                  </div>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </Router>
       </UserProvider>
     </ThemeProvider>

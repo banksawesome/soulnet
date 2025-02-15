@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Smile } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { formatDate } from '../utils/dateUtils';
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import { useTheme } from '../context/ThemeContext';
 
 export default function PostCard({ post }) {
   const { user } = useUser();
+  const { theme } = useTheme();
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -12,6 +16,7 @@ export default function PostCard({ post }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState(post.comments || []);
   const [showOptions, setShowOptions] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleLike = () => {
     if (isLiked) {
@@ -40,14 +45,40 @@ export default function PostCard({ post }) {
     setNewComment('');
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
+  const handleShare = async () => {
+    try {
+      const shareData = {
         title: `Post by ${post.author.name}`,
         text: post.content,
         url: window.location.href
-      });
+      };
+
+      if (post.image) {
+        // If the post has an image, we can try to share it as well
+        try {
+          const response = await fetch(post.image);
+          const blob = await response.blob();
+          const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+          shareData.files = [file];
+        } catch (error) {
+          console.error('Error preparing image for share:', error);
+        }
+      }
+
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+        alert('Link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
     }
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setNewComment(newComment + emoji.native);
   };
 
   return (
@@ -67,7 +98,7 @@ export default function PostCard({ post }) {
           </div>
         </div>
         <div className="relative">
-          <button 
+          <button
             className="p-2 hover:bg-gray-100 dark:hover:bg-dark-border rounded-full"
             onClick={() => setShowOptions(!showOptions)}
           >
@@ -90,9 +121,9 @@ export default function PostCard({ post }) {
           )}
         </div>
       </div>
-      
+
       <p className="mb-4 whitespace-pre-wrap dark:text-gray-200">{post.content}</p>
-      
+
       {post.image && (
         <img
           src={post.image}
@@ -101,29 +132,29 @@ export default function PostCard({ post }) {
           loading="lazy"
         />
       )}
-      
+
       <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-4">
-        <button 
+        <button
           className={`flex items-center space-x-2 hover:text-primary-600 ${isLiked ? 'text-primary-600' : ''}`}
           onClick={handleLike}
         >
           <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
           <span>{likes}</span>
         </button>
-        <button 
+        <button
           className="flex items-center space-x-2 hover:text-primary-600"
           onClick={() => setShowComments(!showComments)}
         >
           <MessageCircle className="w-5 h-5" />
           <span>{comments.length}</span>
         </button>
-        <button 
+        <button
           className="flex items-center space-x-2 hover:text-primary-600"
           onClick={handleShare}
         >
           <Share2 className="w-5 h-5" />
         </button>
-        <button 
+        <button
           className={`flex items-center space-x-2 hover:text-primary-600 ${isBookmarked ? 'text-primary-600' : ''}`}
           onClick={() => setIsBookmarked(!isBookmarked)}
         >
@@ -135,17 +166,32 @@ export default function PostCard({ post }) {
         <div className="border-t dark:border-dark-border pt-4">
           <form onSubmit={handleComment} className="mb-4">
             <div className="flex space-x-2">
-              <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Write a comment..."
-                className="flex-1 rounded-lg border dark:border-dark-border dark:bg-dark-bg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-200"
-              />
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Write a comment..."
+                  className="w-full rounded-lg border dark:border-dark-border dark:bg-dark-bg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-200"
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                >
+                  <Smile className="w-5 h-5" />
+                </button>
+                {showEmojiPicker && (
+                  <div className="absolute right-0 bottom-full mb-2">
+                    <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+                  </div>
+                )}
+              </div>
               <button
                 type="submit"
                 className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
                 disabled={!newComment.trim()}
+                onClick={() => setShowEmojiPicker(false)}
               >
                 Post
               </button>
