@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
-import { 
-  Home, 
-  User, 
-  Bell, 
-  LogOut, 
-  MessageCircle, 
-  Compass, 
-  Bookmark, 
+import {
+  Home,
+  User,
+  Bell,
+  LogOut,
+  MessageCircle,
+  Compass,
+  Bookmark,
   Settings,
   Calendar,
   Users,
@@ -22,7 +22,9 @@ import {
   Sun,
   Moon,
   Search,
-  ChevronDown
+  ChevronDown,
+  Image,
+  Group as UserGroup
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -47,21 +49,23 @@ export default function Navbar() {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
+    { path: '/notifications', icon: Bell, label: 'Notifications' },
     { path: '/messages', icon: MessageCircle, label: 'Messages' },
     { path: '/explore', icon: Compass, label: 'Explore' },
-    { path: '/notifications', icon: Bell, label: 'Notifications' },
     { path: '/bookmarks', icon: Bookmark, label: 'Bookmarks' },
     { path: '/events', icon: Calendar, label: 'Events' },
-    { path: '/groups', icon: Users, label: 'Groups' },
+    { path: '/groups', icon: UserGroup, label: 'Groups' },
+    { path: '/stories', icon: Camera, label: 'Stories' },
     { path: '/trending', icon: TrendingUp, label: 'Trending' },
-    { path: '/profile', icon: User, label: 'Profile' }
+    { path: '/friends', icon: Users, label: 'Friends' },
+    { path: '/photos', icon: Image, label: 'Photos' }
   ];
-  
+
   const secondaryItems = [
-    { path: '/settings', icon: Settings, label: 'Settings' },
     { path: '/help', icon: HelpCircle, label: 'Help' },
     { path: '/privacy', icon: Shield, label: 'Privacy' }
   ];
+
 
   const handleLogout = () => {
     logout();
@@ -73,18 +77,17 @@ export default function Navbar() {
     <>
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu */}
-      <div className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-dark-card transform transition-transform duration-200 ease-in-out z-50 lg:hidden ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`overflow-y-auto hide-scrollbar fixed top-0 left-0 h-full w-72 bg-white dark:bg-dark-card transform transition-transform duration-200 ease-in-out z-50 lg:hidden ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         <div className="p-4">
-          <button 
+          <button
             onClick={() => setIsMenuOpen(false)}
             className="absolute top-4 right-4 text-gray-500 dark:text-gray-400"
           >
@@ -126,7 +129,7 @@ export default function Navbar() {
         <div className="w-full px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <button 
+              <button
                 className="lg:hidden mr-4 text-gray-500 dark:text-gray-400"
                 onClick={() => setIsMenuOpen(true)}
               >
@@ -148,7 +151,7 @@ export default function Navbar() {
                 <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {/* Theme Toggle */}
               <button
@@ -178,7 +181,7 @@ export default function Navbar() {
 
               {/* Profile Dropdown */}
               <div className="relative" ref={dropdownRef}>
-                <button 
+                <button
                   className="flex items-center space-x-2"
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                 >
